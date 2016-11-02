@@ -6,14 +6,14 @@
 $GroupName = Read-Host "Enter the Group Name: "
 $outfile = Read-Host "Where to output: "
 
-$Groups = Get-ADGroup -filter {Name -like $GroupName} -Properties Name, Description | Select-Object Name, Description
+$Groups = Get-ADGroup -filter {Name -like $GroupName} -Properties Name | Select-Object Name, Description
 
 ForEach ($Group in $Groups)
    {
     $ArrayofMembers = Get-ADGroupMember -identity $($group.name) -recursive | Select-Object samaccountname, Name
     foreach($Member in $ArrayofMembers)
     {
-        Add-Content $outfile "`n `"$($group.name)`", `"$($group.Description)`",  `"$($Member.samaccountname)`",  `"$($Member.name)`" "
+        Add-Content $outfile "`n `"$($group.name)`",  `"$($Member.samaccountname)`",  `"$($Member.name)`" "
     }
 
 }
