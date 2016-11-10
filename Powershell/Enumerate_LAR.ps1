@@ -1,4 +1,4 @@
-#Must run as server admin
+#Must run as admin
 #Make sure the list of machines does not contain extra spaces
 
 $servers= Read-Host "Enter the Machine List Location: "
