@@ -1,0 +1,66 @@
+Terminated Users Enumeration Process:
+The purpose of this document is to describe the process I’ve used to automate some of the share drive enumeration to find permissions that should be removed.
+
+What you’ll need:
+-	Powershell
+-	SubInACL from Microsoft, installed in the following directory:
+o	C:\Program Files (x86)\Windows Resource Kits\Tools
+-	The following scripts:	
+o	1 Enum_Share_Drive_NTFS.ps1
+o	2 Iterate_User.bat
+o	3 Enum_User.bat
+o	4 Iterate_Permissions.bat (this may be deprecated, I can't find the batch file, I think it's been incorporated into Enum_User)
+-	A list of terminated user’s domain names (in a .txt file is preferable)
+o	With each user on its own line with the “Domain\” removed
+-	The directory paths for all the drives you will be scanning
+o	Eg. \\server\share
+
+
+Setup:
+-	Create a new directory on your computer at c:\enum_share
+-	Copy all of your scripts to this directory
+-	Copy terminated users list to this directory
+
+Step 1: Enumerate Full Directory Permissions
+-	To begin, run powershell as administrator and then set the following command:
+o	Set-ExecutionPolicy Unrestricted
+-	Now go to the “1 Enum_Drive.ps1” script, right click on it and select ‘Edit’
+-	Press the green play button to begin this script
+-	You will be prompted for the directory path and the output file name, enter these and let the script run
+-	This will take a long time. Once it finishes, continue running this script until you have enumerated all of the directories that you plan on working with
+
+Step 2: Iterate Terminated Users List Against Permissions
+-	To start, you’ll want to open the output files from all of the directories you have scanned against, and resave them with ANSI encoding
+-	To be safe, do the same with the list of terminated users as well
+-	Now double click the”2  Iterate_User.bat” file (does not need to be run as admin)
+-	Fill out the information requested and let the script run
+-	The output file will contain the following information:
+o	The line number the user was found on and what their access is
+o	If a line starts with “Path: “, it is referencing a file share and not a permission, remove all of these entries
+
+Step 3: Enumerate Users Against Directories
+-	Parse through your output files from the last step and extract all the user account names and save them to new terminated user lists.
+o	Make sure you keep the full Domain\username format
+o	Do a new list for each directory you scanned
+-	Right click on the “3 Enum_User.bat” file and select ‘Run as Administrator’
+-	Select the search list based on the new, more condensed user lists you created in the last step
+-	This will output each user’s permissions to an individual output file based on your naming convention
+o	Best practice: Name the output file based on the drive you are scanning
+o	This script will append an incrementing number to each user’s file for reference
+-	This script will take a considerable amount of time to run, especially if there are a lot of users, plan accordingly
+-	Once complete, you may want to rename the output file to reflect the user name it ran for (it will make the next step easier)
+
+Step 4: Iterate Permissions
+-	Open the output file from the previous step and save it with ANSI encoding
+-	Now double click the “4 Iterate_Permissions.bat” file (does not need to be run as admin)
+-	Enter the name of the output file from the last step and the new output file’s name
+o	Best practice: Name the output file based on the user and the drive it is for
+-	You now have a complete listing of all the directories this user has access to
+
+
+Conclusion:
+This process is far from perfect and takes much longer than I want it to, but this automates a lot of the tedious stuff and at least gets you on the right track.
+
+The SubInACL tool has a lot of other uses that could come in handy (such as editing permissions in batch form) and will require further testing to see if that can be added into a new step.
+
+Ideally I would like to be able to skip step 3 and iterate the permissions directly against the original findings, but have not found an easy way to do that as of yet. 
