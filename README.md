@@ -8,5 +8,5 @@ This is really just a dumping ground for various tools I have written. Some may 
 -Windows Remote Server Administration Tools
 
 ###Dependencies needed for the Python scripts:
--csv_converter.py- requires csv (available via pip3)
+-all built-in
 
