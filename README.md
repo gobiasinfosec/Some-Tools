@@ -4,13 +4,13 @@ This is really just a dumping ground for various tools I have written. Some may 
 
 Tools may get removed if I've created a better way of doing something and made into a new repository. Some of these scripts are really bad but may fill a stop gap or help you automate something better.
 
-###Some tools that are needed for some of the scripts:
+### Some tools that are needed for some of the scripts:
 -Windows FCIV
 
 -Windows Remote Server Administration Tools
 
 -SubInACL from Microsoft
 
-###Dependencies needed for the Python scripts:
+### Dependencies needed for the Python scripts:
 -all built-in
 
