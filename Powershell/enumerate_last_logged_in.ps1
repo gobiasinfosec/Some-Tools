@@ -43,4 +43,4 @@ foreach($computer in $computers.name)
 
 # write results to output file
 $results | convertto-csv -NoTypeInformation -Delimiter "," | % { $_ -replace '"', ""} | out-file $output -Encoding ascii
-$unconnected | convertto-csv -NoTypeInformation -Delimiter "," | % { $_ -replace '"', ""} | out-file $error_output -Encoding ascii
+$unconnected | out-file $error_output -Encoding ascii
